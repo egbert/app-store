@@ -56,6 +56,17 @@ __END__
       #egbert {float: left}
       a {color: #000; text-decoration: none; padding-right: 20px}
       a:hover, a:active {color: #008ce2;}
+    :javascript
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-20619859-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+      
   %body
     %a{:target => 'main', :href => "/url/#{CGI.escape('http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewGrouping?mt=12&id=29520')}"} Featured
     %a{:target => 'main', :href => "/url/#{CGI.escape('http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewTopSummary?s=143441')}"} Top Charts
