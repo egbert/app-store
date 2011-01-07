@@ -75,4 +75,4 @@ __END__
       %input{:type => 'search', :name => 'q'}
     #egbert
       by 
-      %a{ :href => 'http://twitter.com/egbrt'} @egbrt
+      %a{ :target => '_blank', :href => 'http://twitter.com/egbrt'} @egbrt
