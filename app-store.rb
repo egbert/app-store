@@ -16,15 +16,17 @@ get '/url/*' do
   raise 'Hi!' unless URI.parse(params[:splat][0]).host.match(/apple.com$/)
   agent = Mechanize.new
   agent.pre_connect_hooks << lambda do |p|
-    p[:request]['X-Apple-Store-Front'] = '143441-1,13'
-    p[:request]['Accept'] = 'application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5'
-    p[:request]['X-Apple-Partner'] = 'origin.0'
-    p[:request]['Accept-Language'] = 'en-us'
-    p[:request]['X-Apple-Connection-Type'] = 'WiFi'
-    p[:request]['User-Agent'] = 'MacAppStore/1.0 (Macintosh; U; Intel Mac OS X 10.6.6; en) AppleWebKit/533.18.1'
-    p[:request]['Accept-Encoding'] = 'gzip, deflate'
-    p[:request]['Connection'] = 'keep-alive'
-    p[:request]['Host'] = 'itunes.apple.com'
+    {
+      'X-Apple-Store-Front' => '143441-1,13',
+      'Accept' => 'application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5',
+      'X-Apple-Partner' => 'origin.0',
+      'Accept-Language' => 'en-us',
+      'X-Apple-Connection-Type' => 'WiFi',
+      'User-Agent' => 'MacAppStore/1.0 (Macintosh; U; Intel Mac OS X 10.6.6; en) AppleWebKit/533.18.1',
+      'Accept-Encoding' => 'gzip, deflate',
+      'Connection' => 'keep-alive',
+      'Host' => 'itunes.apple.com'
+    }.each { |k,v| p[:request][k] = v}
   end
 
   page = agent.get(params[:splat][0]).parser
@@ -33,7 +35,7 @@ get '/url/*' do
     link['href'] = "/url/#{CGI.escape(link['href'])}"
   end
 
-  page.to_s
+  page.to_html
 end
 
 __END__
