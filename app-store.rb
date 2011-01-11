@@ -8,9 +8,13 @@ get '/menu' do
   haml :menu
 end
 
+get '/search' do
+  redirect "/url/#{CGI.escape('http://ax.search.itunes.apple.com/WebObjects/MZSearch.woa/wa/search?q=')}#{params[:q]}"
+end
+
 get '/url/*' do
   raise 'Hi!' unless URI.parse(params[:splat][0]).host.match(/apple.com$/)
-  agent = WWW::Mechanize.new
+  agent = Mechanize.new
   agent.pre_connect_hooks << lambda do |p|
     p[:request]['X-Apple-Store-Front'] = '143441-1,13'
     p[:request]['Accept'] = 'application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5'
@@ -30,10 +34,6 @@ get '/url/*' do
   end
 
   page.to_s
-end
-
-get '/search' do
-  redirect "/url/#{CGI.escape('http://ax.search.itunes.apple.com/WebObjects/MZSearch.woa/wa/search?q=')}#{params[:q]}"
 end
 
 __END__
