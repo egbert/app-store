@@ -13,7 +13,8 @@ get '/search' do
 end
 
 get '/url/*' do
-  raise 'Hi!' unless URI.parse(params[:splat][0]).host.match(/apple.com$/)
+  url = params[:splat][0]
+  raise 'Invalid domain' unless URI.parse(url).host.match(/apple.com$/)
   agent = Mechanize.new
   agent.pre_connect_hooks << lambda do |p|
     {
@@ -29,7 +30,7 @@ get '/url/*' do
     }.each { |k,v| p[:request][k] = v}
   end
 
-  page = agent.get(params[:splat][0]).parser
+  page = agent.get(url).parser
 
   page.css('a').each do |link|
     link['href'] = "/url/#{CGI.escape(link['href'])}"
